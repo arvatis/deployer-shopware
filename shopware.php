@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . '/vendor/deployer/deployer/recipe/common.php';
+require_once __DIR__ . '/../../deployer/deployer/recipe/common.php';
 
 set('shared_dirs', [
     'engine/Shopware/Plugins/Community',
