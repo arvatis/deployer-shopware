@@ -1,0 +1,16 @@
+{
+  "name": "arvatis/deployer-shopware",
+  "description": "Shopware recipes for deployphp/deployer",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Kevin Mauel (Bavragor)",
+      "email": "mauel@arvatis.com"
+    }
+  ],
+  "keywords": ["shopware", "deployer", "recipe"],
+  "require": {
+    "deployer/deployer": "~3.1"
+  }
+}
