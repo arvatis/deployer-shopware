@@ -31,6 +31,15 @@ set('writable_dirs', [
     'recovery',
     'themes'
 ]);
+
+
+task('deploy:writable:create_dirs', function() {
+    foreach (get('writable_dirs') as $dir) {
+        run("cd {{release_path}} && mkdir -p $dir");
+    }
+});
+
+before('deploy:writable', 'deploy:writable:create_dirs');
 set('writable_use_sudo', false);
 
 /**
@@ -62,7 +71,12 @@ task('deploy:shared:sub', function () {
 
 after('deploy:shared', 'deploy:shared:sub');
 
-task('deploy:prepare:configuration', function() {
+task('deploy:prepare:configuration:1', function() {
+    run("cd {{release_path}} && cp {{deploy_path}}/shared/default.ini ./");
+    run("cd {{release_path}} && mv ./config.php.dist ./config.php && chmod 777 ./config.php");
+});
+
+task('deploy:prepare:configuration:2', function() {
     run("cd {{release_path}} && cp {{deploy_path}}/shared/default.ini ./");
     run("cd {{release_path}} && mv ./config.php.dist ./config.php && chmod 777 ./config.php");
     /**
@@ -87,7 +101,15 @@ task('deploy:install:shop', function() {
     run("cd {{release_path}}/recovery/install/data && touch install.lock");
 });
 
-after('deploy:prepare:configuration', 'deploy:install:shop');
+after('deploy:prepare:configuration:2', 'deploy:install:shop');
+
+task('shopware:upload-community', function() {
+    upload('engine/Shopware/Plugins/Community/Backend', '{{deploy_path}}/shared/engine/Shopware/Plugins/Community/Backend');
+    upload('engine/Shopware/Plugins/Community/Core', '{{deploy_path}}/shared/engine/Shopware/Plugins/Community/Core');
+    upload('engine/Shopware/Plugins/Community/Frontend', '{{deploy_path}}/shared/engine/Shopware/Plugins/Community/Frontend');
+});
+
+before('deploy:symlink', 'shopware:upload-community');
 
 /**
  * Main task
@@ -99,7 +121,20 @@ task('shopware:install', [
     'deploy:shared',
     'deploy:vendors',
     'deploy:writable',
-    'deploy:prepare:configuration',
+    'deploy:prepare:configuration:1',
+    'deploy:prepare:configuration:2',
     'deploy:symlink',
     'cleanup',
 ])->desc('Install a complete new shopware instance');
+
+task('shopware:deploy', [
+    'deploy:prepare',
+    'deploy:release',
+    'deploy:update_code',
+    'deploy:shared',
+    'deploy:vendors',
+    'deploy:writable',
+    'deploy:prepare:configuration:1',
+    'deploy:symlink',
+    'cleanup',
+])->desc('Deploys a given shopware instance');
