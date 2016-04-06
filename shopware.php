@@ -23,8 +23,8 @@ set('create_shared_dirs', [
     'files/downloads'
 ]);
 set('writable_dirs', [
-    'var',
-    'web',
+    'var/cache',
+    'web/cache',
     'files',
     'media',
     'engine/Shopware/Plugins/Community',
