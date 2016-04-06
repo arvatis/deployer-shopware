@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../../deployer/deployer/recipe/common.php';
 
+set('shared_files', ['.htaccess']);
 set('shared_dirs', [
     'engine/Shopware/Plugins/Community',
     'media',
