@@ -11,6 +11,7 @@
   ],
   "keywords": ["shopware", "deployer", "recipe"],
   "require": {
-    "deployer/deployer": "~3.1"
+    "deployer/deployer": "~3.1",
+    "herzult/php-ssh": "~1.1"
   }
 }
