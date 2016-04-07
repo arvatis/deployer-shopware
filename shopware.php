@@ -26,8 +26,6 @@ set('create_shared_dirs', [
 set('writable_dirs', [
     'var/cache',
     'web/cache',
-    'files',
-    'media',
     'engine/Shopware/Plugins/Community',
     'recovery',
     'themes'
