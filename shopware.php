@@ -108,6 +108,12 @@ task('shopware:upload-community', function() {
     upload('engine/Shopware/Plugins/Community/Frontend', '{{deploy_path}}/shared/engine/Shopware/Plugins/Community/Frontend');
 });
 
+task('shopware:download-community', function() {
+    download('engine/Shopware/Plugins/Community/Backend', '{{deploy_path}}/shared/engine/Shopware/Plugins/Community/Backend');
+    download('engine/Shopware/Plugins/Community/Core', '{{deploy_path}}/shared/engine/Shopware/Plugins/Community/Core');
+    download('engine/Shopware/Plugins/Community/Frontend', '{{deploy_path}}/shared/engine/Shopware/Plugins/Community/Frontend');
+});
+
 before('deploy:symlink', 'shopware:upload-community');
 
 /**
