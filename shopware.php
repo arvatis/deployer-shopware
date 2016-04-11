@@ -143,3 +143,13 @@ task('shopware:deploy', [
     'deploy:symlink',
     'cleanup',
 ])->desc('Deploys a given shopware instance');
+
+task('shopware:deploy:test', [
+    'deploy:prepare',
+    'deploy:release',
+    'deploy:update_code',
+    'deploy:shared',
+    'deploy:vendors',
+    'deploy:writable',
+    'deploy:prepare:configuration:1',
+])->desc('Deploys a given shopware instance, without releasing it!');
