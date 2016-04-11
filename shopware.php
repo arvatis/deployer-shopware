@@ -45,15 +45,10 @@ set('writable_use_sudo', false);
  * Installing vendors tasks.
  */
 task('deploy:vendors:recovery', function () {
-    $composer = get('composer_command');
+    $composer = env('bin/composer');
+    $envVars = env('env_vars') ? 'export ' . env('env_vars') . ' &&' : '';
 
-    if (! commandExist($composer)) {
-        run("cd {{release_path}} && curl -sS https://getcomposer.org/installer | php");
-        $composer = 'php {{release_path}}/composer.phar';
-    }
-
-    $composerEnvVars = env('env_vars') ? 'export ' . env('env_vars') . ' &&' : '';
-    run("cd {{release_path}}/recovery/common && $composerEnvVars $composer {{composer_options}}");
+    run("cd {{release_path}}/recovery/common && $envVars $composer {{composer_options}}");
 
 })->desc('Installing recovery vendors for shopware');
 
