@@ -8,6 +8,10 @@ set('shared_dirs', [
     'media',
     'files'
 ]);
+set('copy_dirs', [
+    'var/cache',
+    'web/cache',
+]);
 set('create_shared_dirs', [
     'engine/Shopware/Plugins/Community/Frontend',
     'engine/Shopware/Plugins/Community/Core',
@@ -38,7 +42,7 @@ task('deploy:writable:create_dirs', function() {
     }
 });
 
-before('deploy:writable', 'deploy:writable:create_dirs');
+before('deploy:copy_dirs', 'deploy:writable:create_dirs');
 set('writable_use_sudo', false);
 
 /**
@@ -103,12 +107,6 @@ task('shopware:upload-community', function() {
     upload('engine/Shopware/Plugins/Community/Frontend', '{{deploy_path}}/shared/engine/Shopware/Plugins/Community/Frontend');
 });
 
-task('shopware:download-community', function() {
-    download('engine/Shopware/Plugins/Community/Backend', '{{deploy_path}}/shared/engine/Shopware/Plugins/Community/Backend');
-    download('engine/Shopware/Plugins/Community/Core', '{{deploy_path}}/shared/engine/Shopware/Plugins/Community/Core');
-    download('engine/Shopware/Plugins/Community/Frontend', '{{deploy_path}}/shared/engine/Shopware/Plugins/Community/Frontend');
-});
-
 before('deploy:symlink', 'shopware:upload-community');
 
 /**
@@ -133,6 +131,7 @@ task('shopware:deploy', [
     'deploy:update_code',
     'deploy:shared',
     'deploy:vendors',
+    'deploy:copy_dirs',
     'deploy:writable',
     'deploy:prepare:configuration:1',
     'deploy:symlink',
@@ -145,6 +144,7 @@ task('shopware:deploy:test', [
     'deploy:update_code',
     'deploy:shared',
     'deploy:vendors',
+    'deploy:copy_dirs',
     'deploy:writable',
     'deploy:prepare:configuration:1',
 ])->desc('Deploys a given shopware instance, without releasing it!');
